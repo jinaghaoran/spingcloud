@@ -1,0 +1,36 @@
+server:
+  port: 7002
+
+eureka:
+  instance:
+#    hostname: localhost   # 实例名称，单机版7002
+    hostname: eureka7002.com
+  client:
+    # false表示不向注册中心注册自己
+    register-with-eureka: false
+    # false表示自己端就是注册中心，职责就是维护服务实例，并不需要去检索服务
+    fetch-registry: false
+    service-url:
+      # 设置与Eureka server交互的地址查询服务和注册服务都需要依赖这个地址，在hostname中定义
+#      单机版配置
+#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+    # 集群版，7002调用7001，7001调用7002
+      defaultZone: http://eureka7001.com:7001/eureka/
+spring:
+  application:
+    name: cloud-payment-service
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    #当前数据源操作类型
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #mysql驱动包
+    url: jdbc:mysql://127.0.0.1:3306/springboot?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true
+    username: root
+    password: password
+  thymeleaf:
+    cache: false
+mybatis:
+  mapper-locations:
+    - classpath:mapper/*.xml
+  type-aliases-package: com.atguigu.springcloud.entities
+  #所有model所在包
