@@ -6,6 +6,10 @@
     <select id="getPaymentById" resultType="com.atguigu.springcloud.entities.Payment" parameterType="Long" resultMap="BaseResultMap">
         select * from payment where id =#{id}
     </select>
+
+    <select id="getPayments" resultMap="BaseResultMap">
+        select * from payment
+    </select>
     <resultMap id="BaseResultMap" type="com.atguigu.springcloud.entities.Payment">
         <id column="id" property="id" jdbcType="BIGINT" />
         <id column="serial" property="serial" jdbcType="VARCHAR" />

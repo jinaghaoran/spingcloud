@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * PaymentServiceImpl
@@ -27,5 +28,10 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Payment getPaymentById(Long id) {
         return paymentDao.getPaymentById(id);
+    }
+
+    @Override
+    public List<Payment> getPayments() {
+        return paymentDao.getPayments();
     }
 }
