@@ -30,4 +30,10 @@ public class OrderFeignController {
     public CommonResult<List<Payment>> paymentFeignCustomer(){
         return paymentFeignService.getPaymentAll();
     }
+
+    @GetMapping("payment/timeout")
+    public String paymentFeignTimeout(){
+//        open  feign-ribbon,客户端一般等待1s，8001服务设置了三秒
+        return paymentFeignService.paymentFeignTimeout();
+    }
 }

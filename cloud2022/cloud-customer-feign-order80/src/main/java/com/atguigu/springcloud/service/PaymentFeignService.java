@@ -32,4 +32,8 @@ public interface PaymentFeignService {
 
     @GetMapping("payment/getAll")
     CommonResult<List<Payment>> getPaymentAll();
+
+
+    @GetMapping("payment/feign/timeout")
+    public String paymentFeignTimeout();
 }

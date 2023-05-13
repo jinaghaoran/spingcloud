@@ -1,23 +1,16 @@
 package com.atguigu.springcloud.controller;
 
-import ch.qos.logback.core.util.TimeUtil;
 import com.atguigu.springcloud.entities.CommonResult;
 import com.atguigu.springcloud.entities.Payment;
-import com.atguigu.springcloud.service.PaymentService;
-import com.atguigu.springcloud.service.impl.PaymentServiceImpl;
-import com.sun.corba.se.spi.ior.IdentifiableFactory;
-import io.micrometer.core.instrument.util.TimeUtils;
+import com.atguigu.springcloud.service.PaymentHystrixService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -30,9 +23,9 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 @Slf4j
-public class PaymentController {
+public class PaymentHystrixController {
     @Resource
-    PaymentService paymentService;
+    PaymentHystrixService paymentService;
     @Resource
     DiscoveryClient discoveryClient;
     @Value("${server.port}")
@@ -55,7 +48,7 @@ public class PaymentController {
 
     @GetMapping("/payment/get/{id}")
     public CommonResult<Payment> getPaymentById(@PathVariable("id") Long id) {
-        log.info("id:{}" + id);
+        log.info("id:" + id);
         log.info("logger");
         if (ObjectUtils.isEmpty(id)) {
             return new CommonResult<>(400, "id不能为空");
@@ -99,15 +92,33 @@ public class PaymentController {
 
     /**
      * 模拟业务，暂停三秒再使用
-     * @return
      */
-    @GetMapping(value="/payment/feign/timeout")
-    public String paymentFeignTimeout(){
+    @GetMapping(value = "/payment/feign/timeout")
+    public String paymentFeignTimeout() {
         try {
             TimeUnit.SECONDS.sleep(3);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return "paymentFeignTimeout:"+serverPort;
+        return "paymentFeignTimeout:" + serverPort;
     }
+
+
+    /**
+     * 使用hystrix，模拟正常访问接口
+     */
+    @GetMapping("/payment/hystrix/ok/{id}")
+    public String paymentHystrixOk(@PathVariable("id") Integer id) {
+        return paymentService.paymentHystrixOk(id);
+    }
+
+
+    /**
+     * 使用hystrix，模拟超时接口
+     */
+    @GetMapping("/payment/hystrix/timeout/{id}")
+    public String paymentHystrixTimeout(@PathVariable("id") Integer id) {
+        return paymentService.paymentHystrixTimeout(id);
+    }
+
 }
