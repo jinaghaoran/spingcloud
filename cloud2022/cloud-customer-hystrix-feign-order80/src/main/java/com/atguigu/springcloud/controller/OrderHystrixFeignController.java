@@ -44,7 +44,7 @@ public class OrderHystrixFeignController {
 //            throw new RuntimeException(e);
 //        }
 //        模拟异常出现
-        int a = 10/0;
+//        int a = 10/0;
 //        open  feign-ribbon,客户端一般等待1s，8001服务设置了三秒
         return paymentFeignService.getPaymentHystrixTimeOut(id);
     }
