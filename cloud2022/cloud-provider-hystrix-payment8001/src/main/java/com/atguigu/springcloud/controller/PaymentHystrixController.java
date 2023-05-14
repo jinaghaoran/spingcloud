@@ -121,4 +121,12 @@ public class PaymentHystrixController {
         return paymentService.paymentHystrixTimeout(id);
     }
 
+    /**
+     * 服务熔断接口测试
+     */
+    @GetMapping("/payment/hystrix/circuit/{id}")
+    public String paymentHystrixCircuit(@PathVariable("id") Integer id){
+        return paymentService.paymentCircuitBreaker(id);
+    }
+
 }

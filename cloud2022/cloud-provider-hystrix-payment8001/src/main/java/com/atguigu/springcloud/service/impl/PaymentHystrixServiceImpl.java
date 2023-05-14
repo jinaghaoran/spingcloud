@@ -1,5 +1,6 @@
 package com.atguigu.springcloud.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.atguigu.springcloud.dao.PaymentHystrixDao;
 import com.atguigu.springcloud.entities.Payment;
 import com.atguigu.springcloud.service.PaymentHystrixService;
@@ -69,6 +70,26 @@ public class PaymentHystrixServiceImpl implements PaymentHystrixService {
 
     }
 
+    @Override
+    @HystrixCommand(fallbackMethod = "paymentCircuitBreakerFallback",commandProperties = {
+//            值在HystrixCommandProperties.class中出现
+            @HystrixProperty(name = "circuitBreaker.enabled",value = "true"),  //是否开启断路器
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold",value = "2"),  //请求次数
+            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds",value = "1000"),  //时间窗口期
+            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage",value = "50"),  //失败率达到多少后跳闸
+    })
+    public String paymentCircuitBreaker(Integer id) {
+        if (id<0){
+            throw new RuntimeException("id不能为负数");
+        }
+        String uuid = IdUtil.simpleUUID();
+        return Thread.currentThread().getName()+"\t"+"调用成功！！"+"\t服务流水号："+uuid;
+    }
+
+    @Override
+    public String paymentCircuitBreakerFallback(Integer id) {
+        return "id不能为负数。请修改后重试。 id->"+id;
+    }
 
 
 }

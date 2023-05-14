@@ -2,6 +2,7 @@ package com.atguigu.springcloud.service;
 
 import com.atguigu.springcloud.entities.Payment;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -27,4 +28,9 @@ public interface PaymentHystrixService {
 
 //    超时hystrix的处理
     public String paymentHystrixTimeoutHandler(Integer id);
+
+//    模拟服务熔断
+    public String paymentCircuitBreaker(@PathVariable ("id") Integer id);
+//    出现熔断后的处理
+    public String paymentCircuitBreakerFallback(@PathVariable ("id") Integer id);
 }

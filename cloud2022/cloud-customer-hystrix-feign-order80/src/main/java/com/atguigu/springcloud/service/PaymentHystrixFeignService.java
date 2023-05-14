@@ -1,5 +1,6 @@
 package com.atguigu.springcloud.service;
 
+import com.atguigu.springcloud.service.impl.PaymentHystrixFeignServiceImpl;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  */
 @Component
 @Service
-@FeignClient(value = "CLOUD-PAYMENT-HYSTRIX-SERVICE")
+@FeignClient(value = "CLOUD-PAYMENT-HYSTRIX-SERVICE",fallback = PaymentHystrixFeignServiceImpl.class)
 public interface PaymentHystrixFeignService {
     /**
      * 调用hystrix8001正常的OK接口

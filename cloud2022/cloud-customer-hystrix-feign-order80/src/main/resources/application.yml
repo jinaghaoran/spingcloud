@@ -25,6 +25,10 @@ logging:
 
 #
 feign:
+  hystrix:
+    enabled: true
+  circuitbreaker:
+    enabled: true
   httpclient:
     enabled: false
   okhttp:
