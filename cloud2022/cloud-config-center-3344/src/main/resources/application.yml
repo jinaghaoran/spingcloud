@@ -1,0 +1,22 @@
+server:
+  port: 3344
+
+spring:
+  application:
+    name: cloud-config-center
+  cloud:
+    config:
+      server:
+        git:
+#          uri: git@github.com:jinaghaoran/springcloud-config.git  # github 上的git仓库的名字
+          uri: https://github.com/jinaghaoran/springcloud-config.git  # github 上的git仓库的名字
+#          https://github.com/jinaghaoran/springcloud-config.git
+#          搜索目录
+          search-paths:
+            - springcloud-config
+#            读取分支
+      label: main
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka
