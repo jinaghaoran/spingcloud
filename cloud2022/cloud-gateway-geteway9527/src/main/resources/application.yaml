@@ -1,0 +1,40 @@
+server:
+  port: 9527
+
+spring:
+  application:
+    name: spring-cloud-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true   # 开启从注册中心动态创建路由的功能，利用微服务名进行路由
+      routes:
+        - id: payment_routh  #payment_routh  # 路由的id。没有固定规则，但是要唯一，建议配合服务名
+#          uri: http://localhost:8001       # 匹配后提供服务的路由地址
+          uri: lb://CLOUD-PAYMENT-SERVICE      # 匹配后提供服务的路由地址
+          predicates:
+            - Path=/payment/get/**        # 断言，路径相匹配的进行路由
+        - id: payment_routh2  #payment_routh  # 路由的id。没有固定规则，但是要唯一，建议配合服务名
+#          uri: http://localhost:8001
+          uri: lb://CLOUD-PAYMENT-SERVICE
+          predicates:
+            - Path=/payment/lb/**
+#            - Before=2023-05-27T21:45:13.828+08:00[Asia/Shanghai]
+#            - After=2023-05-27T23:45:13.828+08:00[Asia/Shanghai]
+#            - Between=2023-05-27T21:45:13.828+08:00[Asia/Shanghai], 2023-05-27T23:45:13.828+08:00[Asia/Shanghai]
+#            - Cookie=username, test     # curl 带cookie访问：curl http://localhost:9527/payment/lb --cookie "username=test"
+#            - Header=X-Request-Id, \d+   # 正则匹配 curl http://localhost:9527/payment/lb -H "X-Request-Id:1234"
+#            - Host=**.edu.cn,**.ahnu.**.cn # curl http://localhost:9527/payment/lb -H "Host: www.ahnu.edu.cn""
+#            - Method=POST  # post请求，curl http://localhost:9527/payment/lb -X POST
+#            - Query=test,123.   # 正则匹配：http://localhost:9527/payment/lb?test=1234
+#          filters:
+#            - AddRequestHeader=X-Request-Id:1234  # 添加请求头：X-Request-Id
+eureka:
+  instance:
+    hostname: cloud-gate-service
+  client:
+    service-url:
+      register-with-eureka: true
+      fetch-registry: true
+      defaultZone: http://eureka7001.com:7001/eureka
