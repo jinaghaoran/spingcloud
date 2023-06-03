@@ -18,6 +18,13 @@
     </properties>
 
     <dependencies>
+<!--        bus总线支持-->
+        <!--添加消息总线RabbitMQ支持-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+        </dependency>
+
         <!--    config 客户端-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

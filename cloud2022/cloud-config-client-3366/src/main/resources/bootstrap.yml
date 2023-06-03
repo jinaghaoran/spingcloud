@@ -1,11 +1,11 @@
 server:
-  port: 3355
+  port: 3366
 
 spring:
   application:
     name: config-client
   cloud:
-#    config客户端配置
+    #    config客户端配置
     config:
       label: main     #分支名称
       name: config    # 配置文件名称

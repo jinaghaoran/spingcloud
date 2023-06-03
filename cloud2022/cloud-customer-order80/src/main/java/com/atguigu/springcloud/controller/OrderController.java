@@ -1,5 +1,6 @@
 package com.atguigu.springcloud.controller;
 
+import cn.hutool.core.lang.Console;
 import com.atguigu.springcloud.entities.CommonResult;
 import com.atguigu.springcloud.entities.Payment;
 import com.atguigu.springcloud.lb.LoadBalancer;
@@ -70,17 +71,39 @@ public class OrderController {
 
     /**
      * 测试手写的轮询算法是否生效
+     * 需注释ApplicationContextConfig下的@LoadBalanced注解才会生效，不然就不会生效
      * @return
      */
     @GetMapping("/consumer/payment/lb")
     public String getPaymentLB(){
         List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
+        Console.log(instances.size()+",,,"+instances+";");
         if (instances.size()>0|| !ObjectUtils.isEmpty(instances)){
             ServiceInstance instance = loadBalancer.instances(instances);
             URI uri = instance.getUri();
             return restTemplate.getForObject(uri+"/payment/lb",String.class);
         }
         return null;
+    }
+
+    /**
+     * 使用系统的轮训
+     * @return
+     */
+    @GetMapping("/consumer/payment/auto/lb")
+    public String getPaymentAutoLB(){
+        return restTemplate.getForObject(PAYMENT_URL+"/payment/lb",String.class);
+    }
+
+
+    /**
+     * 测试zipkin
+     */
+    @GetMapping(value = "/consumer/payment/zipkin")
+    public String zipkin(){
+        List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
+        Console.log(instances.size()+",,,"+instances+";");
+        return restTemplate.getForObject(PAYMENT_URL+"/payment/zipkin",String.class);
     }
 
 }

@@ -10,6 +10,11 @@
     <artifactId>cloud-customer-order80</artifactId>
 
     <dependencies>
+        <!--        sleuth-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+        </dependency>
 <!--        eureka-client。 Ribbon整合，已经提供负载均衡-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
