@@ -1,0 +1,17 @@
+server:
+  port: 83
+spring:
+  application:
+    name: nacos-consumer-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+# 通过读取配置文件方法，来调用服务提供方
+service-url:
+  nacos-user-service: http://nacos-provider-payment
