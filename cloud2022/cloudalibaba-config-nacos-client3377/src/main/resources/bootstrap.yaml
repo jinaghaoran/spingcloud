@@ -1,0 +1,19 @@
+server:
+  port: 3377
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
+        group: DEFAULT_GROUP    # nacos默认组名称，可以自己新建组
+        namespace: 129a6513-1c10-4497-8a3f-0b757a4846ea  # 命名空间。默认存在public
+      discovery:
+        server-addr: 127.0.0.1:8848
+  application:
+    name: nacos-config-client
+#之所以需要配置 spring.application.name ，是因为它是构成 Nacos 配置管理 dataId字段的一部分。
+#
+#在 Nacos Spring Cloud 中，dataId 的完整格式如下：
+#
+#${prefix}-${spring.profiles.active}.${file-extension}
