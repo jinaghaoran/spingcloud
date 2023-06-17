@@ -1,0 +1,23 @@
+server:
+  port: 84
+spring:
+  application:
+    name: nacos-consumer-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+          #        sentinel dashboard地址
+        dashboard: 127.0.0.1:8888
+          #        默认8719端口地址，假如占用，则会从8719后自动+1扫描，直到找到未被占用的端口
+        port: 8179
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+# 通过读取配置文件方法，来调用服务提供方
+service-url:
+  nacos-user-service: http://nacos-provider-payment
