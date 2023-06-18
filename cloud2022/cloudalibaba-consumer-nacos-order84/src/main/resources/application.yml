@@ -21,3 +21,8 @@ management:
 # 通过读取配置文件方法，来调用服务提供方
 service-url:
   nacos-user-service: http://nacos-provider-payment
+
+#  激活sentinel对openfeign的支持
+feign:
+  sentinel:
+    enabled: true

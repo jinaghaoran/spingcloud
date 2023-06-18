@@ -6,6 +6,8 @@ import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.atguigu.springcloud.common.AjaxResult;
 import com.atguigu.springcloud.entities.Payment;
+import com.atguigu.springcloud.service.PaymentFeignService;
+import com.atguigu.springcloud.service.impl.PaymentFallbackServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import javax.annotation.Resource;
 
 /**
  * 远程调用接口，cloudalibaba-provider-payment9003与9004服务
@@ -26,7 +30,10 @@ import org.springframework.web.client.RestTemplate;
 public class CircleBreakerController {
     //    服务名称
     public static final String PAYMENT_URL = "http://nacos-provider-payment";
-    private final RestTemplate restTemplate;   //构造方法实现注入
+    private final RestTemplate restTemplate;
+
+    @Resource
+    private PaymentFeignService paymentFeignService;   //构造方法实现注入
 
     @GetMapping("/fallback/{id}")
 //    @SentinelResource(value = "fallback", fallback = "handlerFallback")  //负责业务异常
@@ -60,6 +67,15 @@ public class CircleBreakerController {
     public AjaxResult blockHandler(@PathVariable("id") String id, BlockException blockException){
         Payment payment = new Payment(Long.valueOf(id), "null");
         return new AjaxResult(555, "Blocked by Sentinel BlockHandler，exception内容：" + blockException.getMessage(),payment);
+    }
+
+
+    /**
+     * feign 实例，远程调用接口，自定义的兜底方法
+     */
+    @GetMapping("/feign/{id}")
+    public AjaxResult feignClient(@PathVariable("id") String id) {
+        return paymentFeignService.getPaymentById(id);
     }
 
 
